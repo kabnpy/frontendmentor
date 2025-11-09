@@ -1,0 +1,37 @@
+:root {
+    --color-white: 0 100% 100%;
+    --color-black: 0 0% 0%;
+
+    --color-grey-400: 0 0% 49%;
+    --color-grey-200: 0 0% 85%;
+    --color-grey-150: 0 0% 90%;
+    --color-grey-100: 0 0% 95%;
+
+    --gradient-start: 0 0% 0% 1;
+    --gradien-end: 0 0% 0% .84;
+
+    --spacing-0: 0rem;
+    --spacing-100: 0.5rem;
+    --spacing-200: 1rem;
+    --spacing-300: 1.5rem;
+    --spacing-400: 2rem;
+    --spacing-500: 2.5rem;
+    --spacing-700: 3.5rem;
+    --spacing-800: 4rem;
+    --spacing-1000: 5rem;
+    --spacing-1200: 6rem;
+
+    /* @link https://utopia.fyi/clamp/calculator?a=360,1240,100—200|24—56|14—18|10—15|9—13&p=font-size */
+    --font-size-100-200: clamp(6.25rem, 3.6932rem + 11.3636vw, 12.5rem);
+    --font-size-24-56: clamp(1.5rem, 0.6818rem + 3.6364vw, 3.5rem);
+    --font-size-14-18: clamp(0.875rem, 0.7727rem + 0.4545vw, 1.125rem);
+    --font-size-10-15: clamp(0.625rem, 0.4972rem + 0.5682vw, 0.9375rem);
+    --font-size-9-13: clamp(0.5625rem, 0.4602rem + 0.4545vw, 0.8125rem);
+    --font-size-06: 0.75rem;
+    --font-size-07: 0.625rem;
+}
+
+body {
+    font-family: "Libre Baskerville", serif;
+    line-height: 1.4;
+}

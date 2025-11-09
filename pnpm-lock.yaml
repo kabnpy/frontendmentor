@@ -41,6 +41,9 @@ importers:
 
   projects/galleria-slideshow-site:
     dependencies:
+      '@frontend-mentor/css-reset':
+        specifier: workspace:*
+        version: link:../../packages/css-reset
       astro:
         specifier: ^5.15.4
         version: 5.15.4(typescript@5.9.3)
