@@ -1,0 +1,105 @@
+---
+import { Image } from 'astro:assets';
+import BackButton from '../assets/shared/icon-back-button.svg';
+import NextButton from '../assets/shared/icon-next-button.svg';
+
+interface Props {
+	paintingTitle: string;
+	artistName: string;
+	currentIndex: number;
+	totalSlides: number;
+	prevSlug?: string;
+	nextSlug?: string;
+}
+
+const { paintingTitle, artistName, currentIndex, totalSlides, prevSlug, nextSlug } = Astro.props;
+const progressWidth = totalSlides > 1 ? ((currentIndex + 1) / totalSlides) * 100 : 0;
+---
+
+<footer class="slideshow-footer" style={`--progress-width: ${progressWidth}%`}>
+	<div class="painting-details">
+		<h2>{paintingTitle}</h2>
+		<p>{artistName}</p>
+	</div>
+	<div class="navigation-buttons">
+		<a
+			href={prevSlug ? `/painting/${prevSlug}` : undefined}
+			class:list={{ disabled: !prevSlug }}
+			role="button"
+			aria-label="Previous painting"
+			aria-disabled={!prevSlug}
+			tabindex={!prevSlug ? -1 : undefined}
+		>
+			<BackButton />
+		</a>
+		<a
+			href={nextSlug ? `/painting/${nextSlug}` : undefined}
+			class:list={{ disabled: !nextSlug }}
+			role="button"
+			aria-label="Next painting"
+			aria-disabled={!nextSlug}
+			tabindex={!nextSlug ? -1 : undefined}
+		>
+			<NextButton />
+		</a>
+	</div>
+</footer>
+
+<style>
+	.slideshow-footer {
+		position: relative;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 1.5rem;
+		border-top: 1px solid hsl(var(--color-grey-150));
+	}
+
+	.slideshow-footer::before {
+		content: '';
+		position: absolute;
+		top: -1px;
+		left: 0;
+		height: 1px;
+		background-color: hsl(var(--color-black));
+		width: var(--progress-width, 0%);
+		transition: width 0.3s ease-in-out;
+	}
+
+	.painting-details h2 {
+		font-size: var(--font-size-03);
+		font-weight: 700;
+		margin: 0;
+	}
+
+	.painting-details p {
+		margin-block-start: 1.5rem;
+		color: hsl(var(--color-grey-400));
+		font-size: var(--font-size-05);
+		margin: 0;
+	}
+
+	.navigation-buttons {
+		display: flex;
+		gap: 1rem;
+	}
+
+	.navigation-buttons a {
+		display: block;
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0;
+		color: hsl(var(--color-grey-400));
+		transition: opacity 0.2s ease-in-out;
+	}
+
+	.navigation-buttons a:hover {
+		opacity: 0.75;
+	}
+
+	.navigation-buttons a.disabled {
+		pointer-events: none;
+		opacity: 0.25;
+	}
+</style>

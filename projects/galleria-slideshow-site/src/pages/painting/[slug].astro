@@ -1,0 +1,277 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Footer from '../../components/Footer.astro';
+import { Image } from 'astro:assets';
+import viewImageIcon from '../../assets/shared/icon-view-image.svg';
+import Dialog from '../../components/Dialog.astro';
+
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const paintings = await getCollection('paintings');
+
+  return paintings.map((painting, index) => ({
+    params: { slug: painting.data.slug },
+    props: {
+      painting,
+      currentIndex: index,
+      totalSlides: paintings.length,
+      allPaintings: paintings,
+    },
+  }));
+}
+
+const { painting, currentIndex, totalSlides, allPaintings } = Astro.props;
+const prevSlug = currentIndex > 0 ? allPaintings[currentIndex - 1].data.slug : undefined;
+const nextSlug =
+  currentIndex < totalSlides - 1 ? allPaintings[currentIndex + 1].data.slug : undefined;
+---
+
+<Layout>
+  <main class="slideshow-page">
+    <article>
+      <div class="slideshow-hero">
+        <div class="slideshow-hero__image">
+          <picture>
+            <source srcset={painting.data.images.hero.large} media="(width >= 800px)" />
+            <img src={painting.data.images.hero.small} alt={`A view of ${painting.data.name}`} />
+          </picture>
+          <button type="button" class="view-image-button">
+            <Image src={viewImageIcon} alt="" aria-hidden="true" />
+            <span>view image</span>
+          </button>
+        </div>
+        <div class="slideshow-hero__info">
+          <h2>{painting.data.name}</h2>
+          <p>{painting.data.artist.name}</p>
+        </div>
+        <div class="slideshow-artist__image">
+          <img src={painting.data.artist.image} alt={painting.data.artist.name} />
+        </div>
+      </div>
+      <div class="slideshow-content">
+        <div class="slideshow-year">{painting.data.year}</div>
+        <p class="slideshow-description">{painting.data.description}</p>
+        <a
+          href={painting.data.source}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="slideshow-source">Go to source</a
+        >
+      </div>
+    </article>
+  </main>
+
+  <Footer
+    paintingTitle={painting.data.name}
+    artistName={painting.data.artist.name}
+    currentIndex={currentIndex}
+    totalSlides={totalSlides}
+    prevSlug={prevSlug}
+    nextSlug={nextSlug}
+  />
+  <Dialog imageUrl={painting.data.images.gallery} title={painting.data.name} />
+</Layout>
+
+<script>
+  const viewImageBtn = document.querySelector('.view-image-button');
+  const dialog = document.querySelector('.image-dialog') as HTMLDialogElement;
+
+  if (viewImageBtn && dialog) {
+    viewImageBtn.addEventListener('click', () => {
+      dialog.showModal();
+    });
+  }
+</script>
+
+<style>
+  .slideshow-hero__image {
+    position: relative;
+  }
+
+  .view-image-button {
+    position: absolute;
+    left: var(--spacing-300);
+    bottom: var(--spacing-300);
+    background-color: hsl(var(--color-black) / 0.75);
+    color: hsl(var(--color-white));
+    border: none;
+    padding: 0.875rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 2.14px;
+    font-size: var(--font-size-07);
+    cursor: pointer;
+    z-index: 1;
+    transition: background-color 0.3s;
+  }
+
+  .view-image-button span {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 700;
+  }
+
+  .view-image-button:is(:hover, :focus-visible) {
+    background-color: hsl(var(--color-black));
+  }
+
+  .slideshow-page {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding: 2rem;
+    margin: 0 auto;
+  }
+
+  article {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-400);
+    align-items: center;
+  }
+
+  .slideshow-hero {
+    display: grid;
+    grid-template-columns: 1fr var(--spacing-700) 1fr;
+    grid-template-rows: auto 1fr var(--spacing-800);
+  }
+
+  .slideshow-hero__image {
+    grid-row: 1/3;
+    grid-column: 1/3;
+  }
+
+  .slideshow-hero__info {
+    grid-row: 1/2;
+    grid-column: 2/4;
+    padding: 0 var(--spacing-700) var(--spacing-700);
+    background-color: hsl(var(--color-white));
+    z-index: 10;
+  }
+
+  .slideshow-hero__info h2 {
+    font-size: var(--font-size-02);
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    max-width: 300px;
+  }
+
+  .slideshow-hero__info p {
+    color: hsl(var(--color-grey-400));
+    margin: 0;
+    font-size: var(--font-size-05);
+  }
+
+  .slideshow-artist__image {
+    grid-row: 2/4;
+    grid-column: 3;
+    padding-inline-start: var(--spacing-300);
+    align-self: end;
+  }
+
+  .slideshow-content {
+    position: relative;
+    color: hsl(var(--color-grey-400));
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 30ch;
+  }
+
+  .slideshow-year {
+    position: absolute;
+    transform: translateY(-50%);
+    font-size: var(--font-size-01);
+    font-weight: 700;
+    color: hsl(var(--color-grey-100));
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .slideshow-description {
+    font-size: var(--font-size-04);
+    font-weight: 700;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .slideshow-source {
+    font-size: var(--font-size-05);
+    letter-spacing: 2px;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: inherit;
+    margin-block-start: var(--spacing-700);
+  }
+
+  @media (max-width: 1200px) {
+    article {
+      gap: var(--spacing-1200);
+      grid-template-columns: 1fr;
+    }
+
+    .slideshow-hero {
+      grid-template-rows: auto 1fr;
+    }
+
+    .slideshow-artist__image {
+      grid-row: 2/3;
+      grid-column: 3;
+      padding-inline-start: var(--spacing-300);
+      align-self: start;
+    }
+
+    .slideshow-content {
+      justify-self: center;
+      max-width: 35ch;
+    }
+    .slideshow-year {
+      transform: translateY(-40%);
+      left: -25%;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .view-image-button {
+      bottom: unset;
+      top: var(--spacing-200);
+      left: var(--spacing-200);
+    }
+
+    .slideshow-year {
+      left: unset;
+      right: 0;
+      transform: translateY(-60%);
+    }
+
+    .slideshow-hero {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 3.125rem auto auto;
+    }
+
+    .slideshow-artist__image,
+    .slideshow-hero__info,
+    .slideshow-hero__image {
+      grid-column: 1/2;
+    }
+
+    .slideshow-hero__image {
+      grid-row: 1/3;
+    }
+
+    .slideshow-hero__info {
+      padding: var(--spacing-400);
+      grid-row: 2/4;
+      width: 85%;
+    }
+
+    .slideshow-artist__image {
+      grid-row: 4;
+      margin: 0;
+      padding: 0;
+      width: 4rem;
+    }
+  }
+</style>

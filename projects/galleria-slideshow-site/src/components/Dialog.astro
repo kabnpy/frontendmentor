@@ -1,0 +1,58 @@
+---
+interface Props {
+  imageUrl: string;
+  title: string;
+}
+const { imageUrl, title } = Astro.props;
+---
+
+<dialog class="image-dialog">
+  <button type="submit" aria-label="Close dialog">CLOSE</button>
+  <img src={imageUrl} alt={title} />
+</dialog>
+
+<style>
+  .image-dialog {
+    position: fixed;
+    inset: 0;
+    padding: 0;
+    border: none;
+    overflow: visible;
+  }
+
+  .image-dialog::backdrop {
+    background-color: hsl(var(--color-black) / 0.75);
+    cursor: pointer;
+  }
+
+  .image-dialog button {
+    position: absolute;
+    right: 0;
+    top: calc(var(--spacing-500) * -1);
+    color: hsl(var(--color-white));
+    font-size: var(--font-size-03);
+    letter-spacing: -0.25px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .image-dialog button:hover {
+    color: hsl(var(--color-white) / 0.75);
+  }
+</style>
+
+<script>
+  const dialog = document.querySelector('.image-dialog') as HTMLDialogElement;
+  const closeBtn = document.querySelector('.image-dialog button') as HTMLButtonElement;
+
+  if (dialog && closeBtn) {
+    closeBtn.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) {
+        dialog.close();
+      }
+    });
+  }
+</script>

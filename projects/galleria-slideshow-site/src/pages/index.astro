@@ -1,11 +1,21 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
-
-const gallery = await getCollection('gallery');
+import paintings from '../content/paintings.json';
+import GalleryCard from '../components/GalleryCard.astro';
 ---
 
-<Layout>
-  <h1>Galleria</h1>
-  <p>Found {gallery.length} paintings in the gallery.</p>
+<Layout class="home-page">
+  <div class="masonry">
+    {
+      paintings.map((painting) => (
+        <GalleryCard
+          slug={painting.slug}
+          imageUrl={painting.images.thumbnail}
+          title={painting.name}
+          artist={painting.artist.name}
+        />
+      ))
+    }
+  </div>
 </Layout>
+

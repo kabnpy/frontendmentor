@@ -1,9 +1,9 @@
 import { defineCollection, z } from 'astro:content';
 import { file } from 'astro/loaders';
 
-const gallery = defineCollection({
+const paintings = defineCollection({
   loader: file('src/content/paintings.json'),
-  schema: ({ image }) =>
+  schema: () =>
     z.object({
       slug: z.string(),
       name: z.string(),
@@ -11,18 +11,18 @@ const gallery = defineCollection({
       description: z.string(),
       source: z.string(),
       artist: z.object({
-        image: image(),
+        image: z.string(),
         name: z.string(),
       }),
       images: z.object({
-        thumbnail: image(),
+        thumbnail: z.string(),
         hero: z.object({
-          small: image(),
-          large: image(),
+          small: z.string(),
+          large: z.string(),
         }),
-        gallery: image(),
+        gallery: z.string(),
       }),
     }),
 });
 
-export const collections = { gallery };
+export const collections = { paintings };

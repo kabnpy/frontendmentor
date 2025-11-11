@@ -1,0 +1,42 @@
+---
+interface Props {
+  slug: string;
+  imageUrl: string;
+  title: string;
+  artist: string;
+}
+
+const { slug, imageUrl, title, artist } = Astro.props;
+---
+
+<article class="gallery-card">
+  <a href={`/painting/${slug}`}>
+    <img src={imageUrl} alt={title} class="gallery-card__image"/>
+    <div class="gallery-card__meta">
+      <h2>{title}</h2>
+      <h3>{artist}</h3>
+    </div>
+  </a>
+</article>
+
+<style>
+  .gallery-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .gallery-card__meta {
+    position: absolute;
+    inset: 0 0 0 0;
+    padding: var(--spacing-500);
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    color: hsl(var(--color-white));
+    background: var(--gradient);
+  }
+
+  .gallery-card:is(:hover, :focus-within) .gallery-card__image {
+    transform: scale(1.05);
+  }
+</style>
