@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@frontend-mentor/css-reset": "workspace:*",
-    "@masonry-grid/react": "^1.0.1",
     "astro": "^5.15.4"
   }
 }

@@ -1,21 +1,48 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import paintings from '../content/paintings.json';
 import GalleryCard from '../components/GalleryCard.astro';
+import { getCollection } from 'astro:content';
+
+const paintings = await getCollection('paintings');
 ---
 
-<Layout class="home-page">
-  <div class="masonry">
+<Layout>
+  <main class="masonry hidden" id="grid" data-mason-it>
     {
       paintings.map((painting) => (
         <GalleryCard
-          slug={painting.slug}
-          imageUrl={painting.images.thumbnail}
-          title={painting.name}
-          artist={painting.artist.name}
+          slug={painting.data.slug}
+          image={painting.data.images.thumbnail}
+          title={painting.data.name}
+          artist={painting.data.artist.name}
         />
       ))
     }
-  </div>
+  </main>
 </Layout>
 
+<style>
+  main {
+    padding: var(--spacing-400);
+  }
+
+  .masonry {
+    display: grid;
+    overflow: hidden;
+    gap: var(--spacing-400);
+    grid-auto-rows: min-content;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    transition: opacity 0.3s ease;
+  }
+
+  .hidden {
+    opacity: 0;
+  }
+</style>
+
+<script type="module">
+  import { BalancedMasonryGrid } from 'https://cdn.skypack.dev/@masonry-grid/vanilla';
+  const grid = document.getElementById('grid');
+  grid.classList.remove('hidden');
+  new BalancedMasonryGrid(grid);
+</script>

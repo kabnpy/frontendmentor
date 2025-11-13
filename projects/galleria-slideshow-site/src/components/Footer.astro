@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import BackButton from '../assets/shared/icon-back-button.svg';
 import NextButton from '../assets/shared/icon-next-button.svg';
 
@@ -16,12 +15,12 @@ const { paintingTitle, artistName, currentIndex, totalSlides, prevSlug, nextSlug
 const progressWidth = totalSlides > 1 ? ((currentIndex + 1) / totalSlides) * 100 : 0;
 ---
 
-<footer class="slideshow-footer" style={`--progress-width: ${progressWidth}%`}>
+<footer class="footer" style={`--progress-width: ${progressWidth}%`}>
 	<div class="painting-details">
 		<h2>{paintingTitle}</h2>
 		<p>{artistName}</p>
 	</div>
-	<div class="navigation-buttons">
+	<div class="navigation-controls">
 		<a
 			href={prevSlug ? `/painting/${prevSlug}` : undefined}
 			class:list={{ disabled: !prevSlug }}
@@ -46,16 +45,16 @@ const progressWidth = totalSlides > 1 ? ((currentIndex + 1) / totalSlides) * 100
 </footer>
 
 <style>
-	.slideshow-footer {
+	.footer {
 		position: relative;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 1.5rem;
+		padding: var(--spacing-400);
 		border-top: 1px solid hsl(var(--color-grey-150));
 	}
 
-	.slideshow-footer::before {
+	.footer::before {
 		content: '';
 		position: absolute;
 		top: -1px;
@@ -73,18 +72,16 @@ const progressWidth = totalSlides > 1 ? ((currentIndex + 1) / totalSlides) * 100
 	}
 
 	.painting-details p {
-		margin-block-start: 1.5rem;
-		color: hsl(var(--color-grey-400));
 		font-size: var(--font-size-05);
-		margin: 0;
+		margin-block-start: 0.25rem;
 	}
 
-	.navigation-buttons {
+	.navigation-controls {
 		display: flex;
 		gap: 1rem;
 	}
 
-	.navigation-buttons a {
+	.navigation-controls a {
 		display: block;
 		background: none;
 		border: none;
@@ -94,11 +91,11 @@ const progressWidth = totalSlides > 1 ? ((currentIndex + 1) / totalSlides) * 100
 		transition: opacity 0.2s ease-in-out;
 	}
 
-	.navigation-buttons a:hover {
+	.navigation-controls a:hover {
 		opacity: 0.75;
 	}
 
-	.navigation-buttons a.disabled {
+	.navigation-controls a.disabled {
 		pointer-events: none;
 		opacity: 0.25;
 	}

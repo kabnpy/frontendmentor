@@ -1,14 +1,17 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
 interface Props {
-  imageUrl: string;
+  image: ImageMetadata;
   title: string;
 }
-const { imageUrl, title } = Astro.props;
+const { image, title } = Astro.props;
 ---
 
 <dialog class="image-dialog">
   <button type="submit" aria-label="Close dialog">CLOSE</button>
-  <img src={imageUrl} alt={title} />
+  <Image src={image} alt={title} width={image.width} height={image.height} />
 </dialog>
 
 <style>

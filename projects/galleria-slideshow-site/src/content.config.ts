@@ -3,7 +3,7 @@ import { file } from 'astro/loaders';
 
 const paintings = defineCollection({
   loader: file('src/content/paintings.json'),
-  schema: () =>
+  schema: ({image}) =>
     z.object({
       slug: z.string(),
       name: z.string(),
@@ -11,16 +11,16 @@ const paintings = defineCollection({
       description: z.string(),
       source: z.string(),
       artist: z.object({
-        image: z.string(),
+        image: image(),
         name: z.string(),
       }),
       images: z.object({
-        thumbnail: z.string(),
+        thumbnail: image(),
         hero: z.object({
           small: z.string(),
           large: z.string(),
         }),
-        gallery: z.string(),
+        gallery: image(),
       }),
     }),
 });

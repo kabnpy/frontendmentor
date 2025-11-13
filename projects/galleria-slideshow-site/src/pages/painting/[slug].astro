@@ -1,8 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Footer from '../../components/Footer.astro';
 import { Image } from 'astro:assets';
-import viewImageIcon from '../../assets/shared/icon-view-image.svg';
+import ViewImageIcon from '../../assets/shared/icon-view-image.svg';
 import Dialog from '../../components/Dialog.astro';
 
 import { getCollection } from 'astro:content';
@@ -27,50 +26,50 @@ const nextSlug =
   currentIndex < totalSlides - 1 ? allPaintings[currentIndex + 1].data.slug : undefined;
 ---
 
-<Layout>
-  <main class="slideshow-page">
-    <article>
-      <div class="slideshow-hero">
-        <div class="slideshow-hero__image">
-          <picture>
-            <source srcset={painting.data.images.hero.large} media="(width >= 800px)" />
-            <img src={painting.data.images.hero.small} alt={`A view of ${painting.data.name}`} />
-          </picture>
-          <button type="button" class="view-image-button">
-            <Image src={viewImageIcon} alt="" aria-hidden="true" />
-            <span>view image</span>
-          </button>
-        </div>
-        <div class="slideshow-hero__info">
-          <h2>{painting.data.name}</h2>
-          <p>{painting.data.artist.name}</p>
-        </div>
-        <div class="slideshow-artist__image">
-          <img src={painting.data.artist.image} alt={painting.data.artist.name} />
-        </div>
+<Layout
+  paintingTitle={painting.data.name}
+  artistName={painting.data.artist.name}
+  currentIndex={currentIndex}
+  totalSlides={totalSlides}
+  prevSlug={prevSlug}
+  nextSlug={nextSlug}
+>
+  <main>
+    <div class="hero">
+      <div class="hero-image">
+        <picture>
+          <source srcset={painting.data.images.hero.large} media="(width >= 800px)" />
+          <img
+            src={painting.data.images.hero.small}
+            alt={`A view of ${painting.data.name}`}
+          />
+        </picture>
+        <button type="button" class="view-image-button">
+          <ViewImageIcon />
+          <span>view image</span>
+        </button>
       </div>
-      <div class="slideshow-content">
-        <div class="slideshow-year">{painting.data.year}</div>
-        <p class="slideshow-description">{painting.data.description}</p>
-        <a
-          href={painting.data.source}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="slideshow-source">Go to source</a
-        >
+      <div class="hero-meta">
+        <h2>{painting.data.name}</h2>
+        <p>{painting.data.artist.name}</p>
       </div>
-    </article>
+      <div class="hero-artist">
+        <Image src={painting.data.artist.image} alt={painting.data.artist.name} />
+      </div>
+    </div>
+    <div class="content">
+      <div class="content-year">{painting.data.year}</div>
+      <p>{painting.data.description}</p>
+      <a
+        href={painting.data.source}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="slideshow-source">Go to source</a
+      >
+    </div>
   </main>
 
-  <Footer
-    paintingTitle={painting.data.name}
-    artistName={painting.data.artist.name}
-    currentIndex={currentIndex}
-    totalSlides={totalSlides}
-    prevSlug={prevSlug}
-    nextSlug={nextSlug}
-  />
-  <Dialog imageUrl={painting.data.images.gallery} title={painting.data.name} />
+  <Dialog image={painting.data.images.gallery} title={painting.data.name} />
 </Layout>
 
 <script>
@@ -85,14 +84,29 @@ const nextSlug =
 </script>
 
 <style>
-  .slideshow-hero__image {
+  main {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15vw;
+    padding: 2rem;
+  }
+
+  .hero {
+    display: grid;
+    grid-template-rows: 1fr var(--spacing-700) auto auto;
+    grid-template-columns: 1fr;
+  }
+
+  .hero-image {
+    grid-row: 1/3;
+    grid-column: 1/2;
     position: relative;
   }
 
   .view-image-button {
     position: absolute;
-    left: var(--spacing-300);
-    bottom: var(--spacing-300);
+    left: var(--spacing-100);
+    top: var(--spacing-100);
     background-color: hsl(var(--color-black) / 0.75);
     color: hsl(var(--color-white));
     border: none;
@@ -117,161 +131,136 @@ const nextSlug =
     background-color: hsl(var(--color-black));
   }
 
-  .slideshow-page {
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-    padding: 2rem;
-    margin: 0 auto;
-  }
-
-  article {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-400);
-    align-items: center;
-  }
-
-  .slideshow-hero {
-    display: grid;
-    grid-template-columns: 1fr var(--spacing-700) 1fr;
-    grid-template-rows: auto 1fr var(--spacing-800);
-  }
-
-  .slideshow-hero__image {
-    grid-row: 1/3;
-    grid-column: 1/3;
-  }
-
-  .slideshow-hero__info {
-    grid-row: 1/2;
-    grid-column: 2/4;
-    padding: 0 var(--spacing-700) var(--spacing-700);
-    background-color: hsl(var(--color-white));
-    z-index: 10;
-  }
-
-  .slideshow-hero__info h2 {
-    font-size: var(--font-size-02);
-    font-weight: 700;
-    margin: 0 0 0.5rem 0;
-    max-width: 300px;
-  }
-
-  .slideshow-hero__info p {
-    color: hsl(var(--color-grey-400));
-    margin: 0;
-    font-size: var(--font-size-05);
-  }
-
-  .slideshow-artist__image {
+  .hero-meta {
     grid-row: 2/4;
-    grid-column: 3;
-    padding-inline-start: var(--spacing-300);
-    align-self: end;
+    grid-column: 1/2;
+    padding-block: var(--spacing-300);
+    background: hsl(var(--color-white));
+    width: 85%;
+    z-index: 5;
   }
 
-  .slideshow-content {
+  .hero-meta h2 {
+    font-size: var(--font-size-02);
+  }
+
+  .hero-meta p {
+    color: hsl(var(--color-grey-400));
+    font-size: var(--font-size-04);
+  }
+
+  .hero-artist {
+    grid-row: 4;
+    grid-column: 1/2;
+    width: 4rem;
+  }
+
+  .content {
     position: relative;
     color: hsl(var(--color-grey-400));
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    max-width: 30ch;
+    font-weight: 700;
   }
 
-  .slideshow-year {
-    position: absolute;
-    transform: translateY(-50%);
+  .content p {
+    margin-block-end: 3rem;
+  }
+
+  .content a {
+    color: inherit;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: -0.25px;
+    font-size: var(--font-size-04);
+  }
+
+  .content-year {
     font-size: var(--font-size-01);
-    font-weight: 700;
     color: hsl(var(--color-grey-100));
-    pointer-events: none;
+    position: absolute;
+    right: 0;
+    transform: translateY(-50%);
     z-index: -1;
   }
 
-  .slideshow-description {
-    font-size: var(--font-size-04);
-    font-weight: 700;
-    line-height: 1.6;
-    margin: 0;
-  }
-
-  .slideshow-source {
-    font-size: var(--font-size-05);
-    letter-spacing: 2px;
-    text-decoration: none;
-    text-transform: uppercase;
-    color: inherit;
-    margin-block-start: var(--spacing-700);
-  }
-
-  @media (max-width: 1200px) {
-    article {
-      gap: var(--spacing-1200);
-      grid-template-columns: 1fr;
+  @media (min-width: 30em) {
+    .view-image-button {
+      top: unset;
+      bottom: var(--spacing-100);
     }
 
-    .slideshow-hero {
+    .hero {
       grid-template-rows: auto 1fr;
+      grid-template-columns: 1fr 1fr auto;
     }
 
-    .slideshow-artist__image {
-      grid-row: 2/3;
+    .hero-image {
+      grid-row: 1/3;
+      grid-column: 1/3;
+    }
+
+    .hero-meta {
+      padding: 0 var(--spacing-700) var(--spacing-700) var(--spacing-700);
+      grid-row: 1/2;
+      grid-column: 2/4;
+    }
+
+    .hero-artist {
+      grid-row: 2/4;
       grid-column: 3;
-      padding-inline-start: var(--spacing-300);
-      align-self: start;
+      width: 100%;
+      margin-inline-start: var(--spacing-300);
     }
 
-    .slideshow-content {
+    .content {
       justify-self: center;
       max-width: 35ch;
     }
-    .slideshow-year {
-      transform: translateY(-40%);
+
+    .content-year {
+      right: unset;
       left: -25%;
+      transform: translateY(-30%);
     }
   }
 
-  @media (max-width: 500px) {
-    .view-image-button {
-      bottom: unset;
-      top: var(--spacing-200);
-      left: var(--spacing-200);
+  @media (min-width: 50em) {
+    main {
+      gap: 3rem;
+      grid-template-columns: 50% max-content;
+      align-items: center;
+      justify-content: center;
     }
 
-    .slideshow-year {
-      left: unset;
-      right: 0;
-      transform: translateY(-60%);
+    .hero {
+      margin-inline: auto;
+      grid-template-rows: auto 1fr 4rem;
+      grid-template-columns: 1fr var(--spacing-700) 1fr;
     }
 
-    .slideshow-hero {
-      grid-template-columns: 1fr;
-      grid-template-rows: 1fr 3.125rem auto auto;
-    }
-
-    .slideshow-artist__image,
-    .slideshow-hero__info,
-    .slideshow-hero__image {
-      grid-column: 1/2;
-    }
-
-    .slideshow-hero__image {
+    .hero-image {
       grid-row: 1/3;
+      grid-column: 1/3;
     }
 
-    .slideshow-hero__info {
-      padding: var(--spacing-400);
+    .hero-meta {
+      grid-row: 1/2;
+      grid-column: 2/4;
+    }
+
+    .hero-artist {
       grid-row: 2/4;
-      width: 85%;
+      grid-column: 3;
+      align-self: end;
     }
 
-    .slideshow-artist__image {
-      grid-row: 4;
-      margin: 0;
-      padding: 0;
-      width: 4rem;
+    .content {
+      max-width: 30ch;
+    }
+
+    .content-year {
+      left: unset;
+      right: -30%;
+      transform: translateY(-50%);
     }
   }
 </style>

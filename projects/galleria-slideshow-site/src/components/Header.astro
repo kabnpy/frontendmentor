@@ -1,10 +1,10 @@
 ---
-import logo from '../assets/shared/logo.svg';
+import Logo from '../assets/shared/logo.svg';
 ---
 
 <header>
   <a href="/">
-    <img src={logo.src} alt="Galleria" width={logo.width} height={logo.height} />
+    <Logo />
   </a>
   <button type="button">start slideshow</button>
 </header>
@@ -22,9 +22,15 @@ import logo from '../assets/shared/logo.svg';
     background: none;
     border: none;
     cursor: pointer;
-    font-size: var(--font-size-05);
+    font-size: var(--font-size-04);
     letter-spacing: 2px;
     text-transform: uppercase;
     color: hsl(var(--color-grey-400));
+  }
+  @media (min-width: 50em) {
+    header {
+      padding-inline: 0;
+      margin-inline: var(--spacing-400);
+    }
   }
 </style>
