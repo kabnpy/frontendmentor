@@ -1,0 +1,73 @@
+:root {
+  --color-light: 0 0% 95%;
+  --color-dark: 0 0% 0%;
+  --color-primary: 218 99% 52%;
+
+  --space-xs: 0.5rem;
+  --space-s: 1rem;
+  --space-m: 1.5rem;
+  --space-l: 2.5rem;
+  --space-m-l: clamp(1.3125rem, 0.93rem + 1.86vw, 2.5rem);
+
+  --size-step-00: 0.94rem;
+  --size-step-1: 1.35rem;
+  --size-step-2: 1.62rem;
+
+  --radius-s: 0.2rem;
+  --radius-m: 0.75rem;
+  --radius-l: 2.5rem;
+
+  --leading-flat: 1;
+  --leading-fine: 1.2;
+  --leading-standard: 1.4;
+}
+
+body {
+  background-color: hsl(var(--color-light));
+  color: hsl(var(--color-dark));
+  font-family: 'Inter', sans-serif;
+  font-size: var(--size-step-1);
+  line-height: var(--leading-standard);
+  min-height: 100vh;
+  margin: 0;
+}
+
+main {
+  padding-block: clamp(4.375rem, 4.17rem + 0.98vw, 5rem);
+}
+
+.wrapper {
+  margin-inline: auto;
+  max-width: 1200px;
+  padding-inline: var(--space-m-l);
+  position: relative;
+}
+
+.flow>*+* {
+  margin-block-start: var(--flow-space, 1em);
+}
+
+.measure-\[25ch\] {
+  max-width: 25ch;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-placement, auto-fill),
+      minmax(var(--grid-min-item-size, 16rem), 1fr));
+  gap: 2px;
+}
+
+/* A split 50/50 layout */
+
+.grid[data-layout='50-50'] {
+  --grid-placement: auto-fit;
+  --grid-min-item-size: clamp(16rem, 50vw, 33rem);
+}
+
+/* Three column grid layout */
+
+.grid[data-layout='thirds'] {
+  --grid-placement: auto-fit;
+  --grid-min-item-size: clamp(16rem, 33%, 20rem);
+}

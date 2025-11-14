@@ -1,11 +1,63 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const projects = [
+  {
+    title: 'Galleria Slideshow Site',
+    tech: ['Astro', 'TypeScript'],
+    image: '/galleria-slideshow-site/screenshot.jpg',
+    liveUrl: '/galleria-slideshow-site',
+  },
+];
 ---
 
 <Layout>
-	<Welcome />
+  <header class="site-header">
+    <div class="wrapper">
+      <h1>Frontend Mentor Challenges</h1>
+      <hr />
+    </div>
+  </header>
+  <main id="main-content">
+    <div class="wrapper flow">
+      <div>
+        <p class="measure-[25ch]">
+          A collection of challenges from Frontend Mentor, completed by kabnpy.
+        </p>
+      </div>
+      <div class="grid" data-layout="thirds">
+        {
+          projects.map((project) => (
+            <ProjectCard
+              title={project.title}
+              meta={project.tech.join(', ')}
+              imageUrl={project.image}
+              projectUrl={project.liveUrl}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="wrapper">
+      <p>&copy; kabnpy 2024</p>
+    </div>
+  </footer>
 </Layout>
+
+<style>
+  .site-header h1 {
+    font-size: var(--size-step-00);
+    font-weight: 700;
+    padding-block-start: var(--space-m);
+    letter-spacing: 0.04ch;
+    text-transform: uppercase;
+  }
+
+  .site-footer {
+    line-height: var(--leading-flat);
+    padding-block: var(--space-m);
+  }
+</style>

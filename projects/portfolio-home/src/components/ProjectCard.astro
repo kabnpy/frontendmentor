@@ -1,0 +1,110 @@
+---
+interface Props {
+  title: string;
+  meta: string;
+  imageUrl: string;
+  projectUrl: string;
+}
+
+const { title, meta, imageUrl, projectUrl } = Astro.props;
+---
+
+<article class="card">
+  <a href={projectUrl} tabindex="-1" aria-hidden="true">
+    <img src={imageUrl} alt={`Screenshot of the ${title} project`} />
+  </a>
+  <div class="card__content flow">
+    <h3 class="card__heading">{title}</h3>
+    <p class="card__meta">{meta}</p>
+    <a href={projectUrl} class="button">
+      <span>view challenge</span>
+      <svg
+        aria-hidden="true"
+        focusable="false"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          fill="currentColor"
+          d="M16.172 13H4v-2h12.172l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13Z"
+        ></path>
+      </svg>
+    </a>
+  </div>
+</article>
+
+<style>
+  .card {
+    border: 1px dashed hsl(var(--color-dark) / 0.75);
+    border-radius: var(--radius-m);
+    padding: var(--space-l);
+    position: relative;
+    transition: background-color 300ms ease;
+  }
+
+  .card__heading {
+    font-size: var(--size-step-00);
+    text-transform: uppercase;
+    letter-spacing: var(--uppercase-kerning);
+    color: var(--color-light);
+  }
+
+  .card__meta {
+    --flow-space: var(--space-s);
+    font-size: var(--size-step-2);
+    line-height: var(--leading-flat);
+  }
+
+  .card__content {
+    margin-block-start: var(--space-l);
+  }
+
+  .card img {
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: var(--radius-m);
+  }
+
+  .card .button {
+    --flow-space: var(--space-l);
+  }
+
+  .card:has([href]:hover) {
+    background-color: hsl(var(--color-primary) / 0.1);
+  }
+
+  .button {
+    display: inline-flex;
+    gap: 0.5ch;
+    align-items: center;
+    border: none;
+    border-radius: var(--radius-s);
+    cursor: pointer;
+    background: hsl(var(--color-dark));
+    color: hsl(var(--color-light));
+    padding: 1em 2em;
+    text-transform: uppercase;
+    letter-spacing: 0.04ch;
+    font-size: var(--size-step-00);
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: none;
+    transition: background-color 300ms ease;
+  }
+
+  .button:hover {
+    background-color: hsl(var(--color-primary));
+  }
+
+  .button:active {
+    transform: scale(0.99);
+  }
+
+  svg {
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    transition: transform 300ms ease;
+  }
+</style>
