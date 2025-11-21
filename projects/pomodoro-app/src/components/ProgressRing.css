@@ -1,0 +1,4 @@
+.progress-ring__circle {
+  display: block;
+  transition: stroke-dashoffset 0.35s;
+}

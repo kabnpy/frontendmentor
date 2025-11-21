@@ -1,0 +1,142 @@
+.settings-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: hsl(var(--color-blue-900) / 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+[data-font="Kumbh Sans"] .settings-overlay {
+  --font-size-1: 28px;
+  --font-size-2: 13px;
+}
+
+[data-font="Roboto Slab"] .settings-overlay {
+  font-family: 'Roboto Slab', serif;
+}
+
+[data-font="Space Mono"] .settings-overlay {
+  --font-size-3: clamp(0.75rem, 0.7244rem + 0.1136vw, 0.8125rem);
+}
+
+.settings-modal {
+    position: relative;
+    background-color: hsl(var(--color-white));
+    border-radius: 1rem;
+    width: 90%;
+    max-width: 500px;
+    color: hsl(var(--color-blue-900));
+    padding-block-end: var(--space-300);
+}
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-300);
+    border-bottom: 1px solid hsl(var(--color-grey-200));
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.settings-content {
+    padding: var(--space-300);
+}
+
+.settings-form {
+    position: relative;
+}
+
+.settings-subtitle {
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    margin: 0;
+}
+
+.duration-settings {
+    margin-bottom: 1rem;
+}
+
+.font-settings,
+.color-settings {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid hsl(var(--color-grey-200));
+}
+
+.duration-options,
+.font-options,
+.color-options {
+    display: flex;
+    gap: 1rem;
+}
+
+.font-options label,
+.color-options label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.font-options label {
+    background: hsl(var(--color-blue-50));
+    color: hsl(var(--color-grey-850));
+}
+
+.font-options label.active {
+    background-color: hsl(var(--color-blue-900));
+    color: hsl(var(--color-white));
+}
+
+.color-options label.active::before {
+    content: '\2713';
+    color: hsl(var(--color-blue-900));
+    font-size: 1.5rem;
+}
+
+.color-options input {
+    display: none;
+}
+
+.font-options input {
+    display: none;
+}
+
+.color-red {
+    background-color: hsl(var(--color-red-400));
+}
+
+.color-blue {
+    background-color: hsl(var(--color-cyan-300));
+}
+
+.color-purple {
+    background-color: hsl(var(--color-purple-400));
+}
+
+.apply-button {
+    border: none;
+    border-radius: 50em;
+    background: var(--accent-color);
+    padding: var(--space-200) var(--space-500);
+    color: hsl(var(--color-white));
+    font-weight: 700;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%) translateY(50%);
+}

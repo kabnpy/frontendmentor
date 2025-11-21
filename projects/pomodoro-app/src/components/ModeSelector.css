@@ -1,0 +1,25 @@
+.mode-buttons {
+    display: flex;
+    background: hsl(var(--color-blue-900));
+    padding: var(--space-100);
+    border-radius: 50em;
+}
+
+.mode-button {
+    border: none;
+    border-radius: 50em;
+    background: none;
+    padding: var(--space-200) var(--space-300);
+    color: hsl(var(--color-blue-100) / 40%);
+    font-weight: 700;
+    transition: color 0.35s ease;
+}
+
+.mode-button:hover {
+    color: hsl(var(--color-blue-100));
+}
+
+.mode-button:is([aria-selected='true']) {
+    background: var(--accent-color);
+    color: hsl(var(--color-blue-850));
+}

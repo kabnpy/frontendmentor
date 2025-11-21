@@ -1,0 +1,63 @@
+.number-input {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-grow: 1;
+  min-width: 30%;
+}
+
+.number-input label {
+  font-size: 0.8rem;
+  color: hsl(var(--color-grey-400));
+  margin-bottom: 0.25rem;
+  font-weight: 700;
+}
+
+.number-input__wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.number-input input {
+  -moz-appearance: textfield;
+  appearance: textfield;
+  background-color: hsl(var(--color-blue-50));
+  border: none;
+  border-radius: 0.5rem;
+  padding: var(--space-100) var(--space-200);
+  font-weight: 700;
+  font-size: 1rem;
+  color: hsl(var(--color-blue-900));
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.number-input input::-webkit-inner-spin-button,
+.number-input input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.number-input button {
+  position: absolute;
+  right: var(--space-100);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: hsl(var(--color-blue-100));
+}
+
+.number-input button:first-of-type {
+  top: var(--space-100);
+}
+
+.number-input button:last-of-type {
+  bottom: var(--space-100);
+}
+
+.number-input button:hover {
+  color: hsl(var(--color-blue-900));
+}
