@@ -26,7 +26,7 @@ function App() {
     if (Notification.permission === 'granted') {
       new Notification('Timer Finished!', {
         body: `${mode === 'pomodoro' ? 'Pomodoro' : 'Break'} is over.`,
-        icon: '/vite.svg'
+        icon: '/192.svg'
       });
     }
 
