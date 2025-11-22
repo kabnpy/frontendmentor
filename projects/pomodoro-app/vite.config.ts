@@ -23,12 +23,12 @@ export default defineConfig({
             type: 'image/png',
           },
           {
-            src: '192.svg',
+            src: '192.png',
             sizes: '192x192',
             type: 'image/svg+xml',
           },
           {
-            src: '512.svg',
+            src: '512.png',
             sizes: '512x512',
             type: 'image/svg+xml',
           },
