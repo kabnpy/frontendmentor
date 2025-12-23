@@ -1,0 +1,88 @@
+---
+// Props
+interface Office {
+  name: string;
+  address: string;
+  coords: [number, number];
+  email?: string;
+}
+
+interface Props {
+  offices: Record<string, Office>;
+  initialCenter?: [number, number];
+  initialZoom?: number;
+  height?: string;
+}
+
+const {
+  offices,
+  initialCenter = [34.0522, -93.2],
+  initialZoom = 6,
+  height = '560px',
+} = Astro.props as Props;
+---
+
+<div id="map" style={`height:${height}; width:100%;`}></div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin>
+
+<script client:load>
+  import L from 'leaflet';
+
+  const map = L.map('map', { scrollWheelZoom: false }).setView(Astro.props.initialCenter ?? [34.0522, -93.2], Astro.props.initialZoom ?? 6);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  const markers = new Map();
+  const bounds = L.latLngBounds([]);
+
+  Object.entries(Astro.props.offices).forEach(([key, office]) => {
+    const marker = L.marker(office.coords).addTo(map);
+    marker.bindPopup(`
+      <div>
+        <h3><strong>${office.name}</strong></h3>
+        <p>${office.address}</p>
+        ${office.email ? `<p><a href="mailto:${office.email}">${office.email}</a></p>` : ''}
+      </div>
+    `);
+    markers.set(key, marker);
+    bounds.extend(office.coords as any);
+  });
+
+  if (!bounds.isEmpty()) {
+    map.fitBounds(bounds, { padding: [40, 40] });
+  }
+
+  function focusOffice(id) {
+    const marker = markers.get(id);
+    if (!marker) return;
+    const latLng = marker.getLatLng();
+    map.setView(latLng, 14, { animate: true });
+    marker.openPopup();
+  }
+
+  // Enable scroll wheel zoom after first focus to avoid hijacking scroll
+  map.once('focus', () => map.scrollWheelZoom.enable());
+
+  // Listen for global events from buttons
+  const handler = (e) => {
+    const id = e.detail;
+    if (typeof id === 'string') focusOffice(id);
+    const el = document.getElementById('map');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+  window.addEventListener('focus-office', handler);
+
+  // Cleanup when HMR disposes the island
+  // @ts-ignore
+  if (import.meta.hot) {
+    // @ts-ignore
+    import.meta.hot.dispose(() => {
+      window.removeEventListener('focus-office', handler);
+      map.remove();
+    });
+  }
+</script>
+

@@ -1,0 +1,158 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Map from "../components/Map.astro";
+---
+
+<Layout>
+    <main>
+        <div class="wrapper">
+            <section class="section-intro">
+                <picture class="section-page-header__image">
+                    <source
+                        srcset="/assets/contact/desktop/image-hero.jpg"
+                        media="(min-width: 1024px)"
+                    />
+                    <source
+                        srcset="/assets/contact/tablet/image-hero.jpg"
+                        media="(min-width: 768px)"
+                    />
+                    <img src="/assets/contact/mobile/image-hero.jpg" alt="" />
+                </picture>
+                <div class="section-intro flow">
+                    <h1 class="fs-04 text-very-light-grey">Contact</h1>
+                    <h2 class="fs-03">Tell us about your project</h2>
+                    <p>
+                        We’d love to hear more about your project. Please, leave
+                        a message below or give us a call. We have two offices,
+                        one in Texas and one in Tennessee. If you find yourself
+                        nearby, come say hello!
+                    </p>
+                </div>
+            </section>
+            <section class="section-contact">
+                <h2 class="fs-03">Contact Details</h2>
+                <div>                    
+                    <address class="text-medium-grey">
+                        <h3 class="fs-00">Main Office</h3>
+                        <p>
+                            Mail: <a href="mailto:archone@mail.com"
+                                >archone@mail.com</a
+                            >
+                        </p>
+                        <p>Address: 1892 Chenoweth Drive TN</p>
+                        <p>Phone <a href="tel:123-456-3451">123-456-3451</a></p>
+                    </address>
+                    <button class="view-on-map-btn" data-office="main">
+                        View on Map
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="26"
+                            height="20"
+                            ><g
+                                fill="none"
+                                fill-rule="evenodd"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                ><path d="M15 1l10 9-10 9M0 10h24"></path></g
+                            ></svg
+                        >
+                    </button>
+                </div>
+                <div>                    
+                    <address class="text-medium-grey">
+                        <h3 class="fs-00">Office II</h3>
+                        <p>
+                            Mail: <a href="mailto:archtwo@mail.com"
+                                >archtwo@mail.com</a
+                            >
+                        </p>
+                        <p>Address: 3399 Wines Lane TX</p>
+                        <p>Phone <a href="tel:832-123-4321">832-123-4321</a></p>
+                    </address>
+                    <button class="view-on-map-btn" data-office="office-ii">
+                        View on Map
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="26"
+                            height="20"
+                            ><g
+                                fill="none"
+                                fill-rule="evenodd"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                ><path d="M15 1l10 9-10 9M0 10h24"></path></g
+                            ></svg
+                        >
+                    </button>
+                </div>
+            </section>
+            
+<section class="section-map">
+                <h2 class="sr-only">Office Locations</h2>
+<Map 
+                  offices={{
+                    main: { name: 'Main Office', address: '1892 Chenoweth Drive TN', coords: [35.8734, -89.8265], email: 'archone@mail.com' },
+                    'office-ii': { name: 'Office II', address: '3399 Wines Lane TX', coords: [32.7767, -96.7970], email: 'archtwo@mail.com' }
+                  }}
+                />
+                <noscript>
+                  <picture>
+                    <source srcset="/assets/contact/desktop/image-map.png" media="(min-width: 1024px)" />
+                    <source srcset="/assets/contact/tablet/image-map.png" media="(min-width: 768px)" />
+                    <img src="/assets/contact/mobile/image-map.png" alt="Map showing our office locations" />
+                  </picture>
+                </noscript>
+            </section>
+        </div>
+    </main>
+</Layout>
+
+<script>
+  // Dispatch events to Map island
+  document.querySelectorAll('.view-on-map-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = (btn as HTMLButtonElement).dataset.office;
+      if (id) {
+        window.dispatchEvent(new CustomEvent('focus-office', { detail: id }));
+      }
+    })
+  });
+</script>
+
+<style>
+  .view-on-map-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .section-map {
+    margin-top: 2rem;
+  }
+  
+  @media (min-width: 768px) {
+    .section-map { margin-top: 4rem; }
+  }
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .section-map {
+    margin-top: 2rem;
+  }
+
+</style>

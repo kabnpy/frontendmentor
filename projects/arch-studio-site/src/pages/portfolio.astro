@@ -1,0 +1,13 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { projects } from "../data/projects";
+---
+
+<Layout>
+    <main>
+        <div class="wrapper grid projects switcher" data-layout="thirds">
+            {projects.map(project => <ProjectCard {...project} />)}
+        </div>
+    </main>
+</Layout>

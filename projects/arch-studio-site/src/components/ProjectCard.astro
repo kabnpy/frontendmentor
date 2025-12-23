@@ -1,0 +1,31 @@
+---
+interface Props {
+    title: string,
+    meta: string,
+    imageUrl: {
+        mobile: string;
+        tablet: string;
+        desktop: string;
+    };
+    projectUrl?: string;
+    featured?: boolean;
+    index?: string;
+}
+
+const { title, meta, imageUrl, projectUrl = '#', featured = false, index } = Astro.props;
+---
+
+<article class={`project-card ${featured ? 'project-card--featured' : ''}`.trim()}>
+    <a href={projectUrl}>
+        <picture>
+            <source media="(min-width: 1024px)" srcset={imageUrl.desktop}>
+            <source media="(min-width: 768px)" srcset={imageUrl.tablet}>
+            <img class="project-card__image" src={imageUrl.mobile} alt={title}>
+        </picture>
+        <div class="project-card__content text-white">
+            <h3 class="project-card__title fs-01">{title}</h3>
+            <p class="project-card__year">{meta}</p>
+        </div>
+    </a>
+    {featured && <h2 class="project-card__index">{index ?? ''}</h2>}
+</article>

@@ -1,0 +1,70 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { leaders } from "../data/about";
+---
+
+<Layout>
+    <main>
+        <div class="wrapper flow">
+            <section class="section-intro">
+                <picture class="section-page-header__image">
+                    <source
+                        srcset="/assets/about/desktop/image-hero.jpg"
+                        media="(min-width: 1024px)"
+                    />
+                    <source
+                        srcset="/assets/about/tablet/image-hero.jpg"
+                        media="(min-width: 768px)"
+                    />
+                    <img src="/assets/about/mobile/image-hero.jpg" alt="" />
+                </picture>
+                <div class="section-intro flow">
+                    <h1 class="fs-04 text-very-light-grey">About</h2>
+                    <h2 class="fs-03">Your team of professionals</h2>
+                    <p>
+                        Your go-to source for architectural inspiration and
+                        innovation.
+                    </p>
+                </div>
+            </section>
+            <section class="section-heritage">
+                <div class="section-heritage__content flow">
+                    <h2 class="fs-03">Our<br>Heritage</h2>
+                    <p>
+                        Founded in 2007, we started as a trio of architects. Our
+                        complimentary skills and relentless attention to detail
+                        turned Arch into one of the most sought after boutique
+                        firms in the country.
+                    </p>
+                    <p>
+                        Speciliazing in Urban Design allowed us to focus on
+                        creating exceptional structures that live in harmony
+                        with their surroundings. We consider every detail from
+                        every surrounding element to inform our designs.
+                    </p>
+                    <p>
+                        Our small team of world-class professionals provides
+                        input on every project.
+                    </p>
+                </div>
+                <img src="/assets/about/desktop/image-heritage.jpg" alt="">
+            </section>
+            <section class="section-leaders">
+                <h2 class="fs-03">The<br>Leaders</h2>
+                <ul role="list" class="leaders-grid">
+                    {
+                        leaders.map((leader) => (
+                            <li class="leader">
+                                <img src={leader.image} alt={leader.name} />
+                                <div class="leader__content">
+                                    <h3 class="fs-01">{leader.name}</h3>
+                                    <p>{leader.role}</p>
+                                </div>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </section>
+        </div>
+    </main>
+</Layout>

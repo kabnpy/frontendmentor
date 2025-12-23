@@ -1,0 +1,66 @@
+<header class="site-header">
+    <div class="site-header__inner wrapper">
+        <a href="/" class="site-header__logo">
+            <img src="/assets/logo.svg" alt="sneakers logo" />
+        </a>
+
+        <button
+            class="mobile-navigation-toggle"
+            aria-label="Menu"
+            aria-controls="primary-navigation"
+            aria-expanded="false"></button>
+
+        <nav
+            id="primary-navigation"
+            class="navigation"
+            aria-label="primary"
+            data-visible="false"
+        >
+            <ul role="list" class="flex">
+                <li>
+                    <a 
+                        href="/portfolio" 
+                        aria-current={Astro.url.pathname.startsWith('/portfolio') ? 'page' : undefined}
+                    >Portfolio</a>
+                </li>
+                <li>
+                    <a 
+                        href="/about" 
+                        aria-current={Astro.url.pathname.startsWith('/about') ? 'page' : undefined}
+                    >About Us</a>
+                </li>
+                <li>
+                    <a 
+                        href="/contact" 
+                        aria-current={Astro.url.pathname.startsWith('/contact') ? 'page' : undefined}
+                    >Contact</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<script>
+    const navToggle = document.querySelector(".mobile-navigation-toggle");
+    const primaryNav = document.querySelector("#primary-navigation");
+
+    if (navToggle && primaryNav) {
+        navToggle.addEventListener("click", () => {
+            const isVisible = primaryNav.matches('[data-visible="true"]');
+
+            primaryNav.setAttribute("data-visible", String(!isVisible));
+            navToggle.setAttribute("aria-expanded", String(!isVisible));
+        });
+
+        const resizeObserver = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+                if (entry.contentRect.width > 560) {
+                    primaryNav.setAttribute("data-visible", "false");
+                    navToggle.setAttribute("aria-expanded", "false");
+                }
+            }
+        });
+
+        resizeObserver.observe(document.body);
+    }
+</script>
