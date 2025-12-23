@@ -1,0 +1,168 @@
+---
+const currentURL = new URL(Astro.request.url).pathname;
+---
+
+<header class="site-header">
+  <a href="#main-content" class="skip-link">skip to content</a>
+
+  <div class="site-header__logo">
+    <img src="/assets/shared/logo.svg" alt="space tourism logo" />
+  </div>
+
+  <button
+    class="mobile-nav-toggle"
+    aria-label="Menu"
+    aria-controls="primary-navigation"
+    aria-expanded="false"></button>
+
+  <nav class="primary-navigation" aria-label="primary">
+    <ul
+      id="primary-navigation"
+      role="list"
+      class="tab-list flex uppercase font-sans-condensed ls-400"
+      data-visible="false"
+    >
+      <li class:list={{ active: currentURL === '/' }}>
+        <a href="/"><span>00</span>Home</a>
+      </li>
+      <li class:list={{ active: currentURL === '/destination' }}>
+        <a href="/destination"><span>01</span>Destination</a>
+      </li>
+      <li class:list={{ active: currentURL === '/crew' }}>
+        <a href="/crew"><span>02</span>Crew</a>
+      </li>
+      <li class:list={{ active: currentURL === '/technology' }}>
+        <a href="/technology"><span>03</span>Technology</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .site-header__logo {
+    margin: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 45em) {
+    .site-header {
+      margin-top: 2.5rem;
+    }
+
+    .site-header::after {
+      content: '';
+      display: block;
+      position: relative;
+      height: 1px;
+      flex-grow: 1;
+      margin-right: -2.5rem;
+      background: hsl(var(--colour-white) / 0.25);
+      order: 1;
+      z-index: 1;
+    }
+  }
+
+  .primary-navigation ul {
+    --underline-gap: 2rem;
+    --gap: clamp(1.5rem, 5vw, 3.5rem);
+    margin: 0;
+    background-color: hsl(var(--colour-light) / 0.05);
+    backdrop-filter: blur(1.5rem);
+    padding-inline: clamp(3rem, 7vw, 5rem);
+  }
+
+  .mobile-nav-toggle {
+    display: none;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    background-image: url('../assets/shared/icon-hamburger.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 1.5rem;
+    aspect-ratio: 1;
+    flex-shrink: 0;
+    margin: 1.5rem;
+  }
+
+  .mobile-nav-toggle[aria-expanded='true'] {
+    background-image: url('../assets/shared/icon-close.svg');
+  }
+
+  @media (max-width: 35em) {
+    .primary-navigation {
+      position: absolute;
+    }
+
+    .primary-navigation ul {
+      --underline-gap: 1rem;
+      flex-direction: column;
+      position: fixed;
+      inset: 0 0 0 30%;
+      padding: min(20rem, 15vh) 2rem;
+      transform: translateX(100%);
+      transition: transform 350ms ease-in-out;
+      z-index: 1000;
+    }
+
+    .primary-navigation ul[data-visible='true'] {
+      transform: translateX(0);
+    }
+
+    .primary-navigation ul > .active {
+      border: 0;
+    }
+
+    .mobile-nav-toggle {
+      display: inline-block;
+      z-index: 2000;
+    }
+  }
+
+  .primary-navigation a {
+    text-decoration: none;
+  }
+
+  .primary-navigation a > span {
+    font-weight: 700;
+    margin-right: 0.5em;
+  }
+
+  @media (min-width: 35em) {
+    .primary-navigation ul {
+      padding-inline: clamp(3rem, 7vw, 7rem);
+    }
+  }
+
+  @media (min-width: 35em) and (max-width: 44.999em) {
+    .primary-navigation a > span {
+      display: none;
+    }
+  }
+
+  @media (min-width: 45em) {
+    .primary-navigation {
+      order: 2;
+    }
+  }
+</style>
+
+<script>
+  const navToggle = document.querySelector('.mobile-nav-toggle');
+  const primaryNav = document.querySelector('#primary-navigation');
+
+  if (navToggle && primaryNav) {
+    navToggle.addEventListener('click', () => {
+      const isOpen = primaryNav.getAttribute('data-visible') === 'true';
+      primaryNav.setAttribute('data-visible', String(!isOpen));
+      navToggle.setAttribute('aria-expanded', String(!isOpen));
+    });
+  }
+</script>

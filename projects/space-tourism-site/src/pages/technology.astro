@@ -1,0 +1,100 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Tabs from '../components/Tabs.astro';
+
+const technology = await getCollection('technology');
+---
+
+<Layout title="Space Tourism | Technology" page="technology">
+  <main id="main-content" tabindex="-1" class="grid-container grid-container--technology flow">
+    <h1 class="numbered-title uppercase">
+      <span aria-hidden="true">03</span>Space launch 101
+    </h1>
+
+    {
+      technology.map((tech, index) => (
+        <picture
+          class="technology-image"
+          hidden={index !== 0}
+          data-technology-image={tech.data.name}
+        >
+          <source media="(min-width: 720px)" srcset={tech.data.images.portrait} />
+          <img src={tech.data.images.landscape} alt={tech.data.name} />
+        </picture>
+      ))
+    }
+
+    <div class="technology-content flex flow">
+      <Tabs items={technology} group="technology">
+        {
+          technology.map((tech, index) => (
+            <div
+              id={`technology-${index}`}
+              role="tabpanel"
+              aria-labelledby={`technology-tab-${index}`}
+              hidden={index !== 0}
+            >
+              <h2 class="fs-700 font-serif uppercase">
+                <span class="fs-400 text-light font-sans-condensed">the terminology...</span>
+                <br />
+                <span class="name">{tech.data.name}</span>
+              </h2>
+              <p class="measure text-light description">{tech.data.description}</p>
+            </div>
+          ))
+        }
+      </Tabs>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .grid-container--technology {
+    --flow-space: 1.5rem;
+    grid-template-areas:
+      'title'
+      'image'
+      'content';
+  }
+
+  .technology-image {
+    grid-area: image;
+    margin-inline: -1rem;
+    width: calc(100% + 2rem);
+    max-width: unset;
+  }
+
+  .technology-content {
+    grid-area: content;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  @media (min-width: 45em) {
+    .grid-container--technology {
+      justify-items: start;
+      grid-template-areas:
+        '. title title .'
+        '. content image image'
+        '. content image image';
+    }
+
+    .technology-image {
+      margin-inline-start: 0;
+      width: auto;
+      justify-self: end;
+    }
+
+    .technology-content {
+      --gap: 2.5rem;
+      --flow-space: 0;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .numbered-tabs {
+      flex-direction: column;
+    }
+  }
+</style>

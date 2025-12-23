@@ -1,0 +1,136 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Tabs from '../components/Tabs.astro';
+
+const destinations = await getCollection('destinations');
+---
+
+<Layout title="Space Tourism | Destination" page="destination">
+  <main id="main-content" tabindex="-1" class="grid-container grid-container--destination flow">
+    <h1 class="numbered-title uppercase">
+      <span aria-hidden="true">01</span>Pick your destination
+    </h1>
+
+    {
+      destinations.map((destination, index) => (
+        <picture
+          class="destination-image"
+          hidden={index !== 0}
+          data-destination-image={destination.data.name}
+        >
+          <source srcset={destination.data.images.webp} type="image/webp" />
+          <img
+            src={destination.data.images.png}
+            alt={`Image of ${destination.data.name}`}
+            class="rotate"
+          />
+        </picture>
+      ))
+    }
+
+    <Tabs items={destinations} group="destination">
+      {
+        destinations.map((destination, index) => (
+          <div
+            id={`destination-${index}`}
+            role="tabpanel"
+            aria-labelledby={`destination-tab-${index}`}
+            hidden={index !== 0}
+          >
+            <h2 class="fs-800 font-serif uppercase name">{destination.data.name}</h2>
+            <p class="measure text-light description">{destination.data.description}</p>
+            <div class="flex uppercase destination-info__details">
+              <div>
+                <h3 class="fs-300 text-light">AVG. DISTANCE</h3>
+                <p class="fs-600 font-serif distance">{destination.data.distance}</p>
+              </div>
+              <div>
+                <h3 class="fs-300 text-light">EST. TRAVEL TIME</h3>
+                <p class="fs-600 font-serif travel">{destination.data.travel}</p>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </Tabs>
+  </main>
+</Layout>
+
+<style>
+  .grid-container--destination {
+    --flow-space: 2.5rem;
+    grid-template-areas:
+      'title'
+      'image'
+      'tabs'
+      'content';
+  }
+
+  .destination-image {
+    grid-area: image;
+    max-width: 60%;
+    pointer-events: none;
+    justify-self: center;
+  }
+
+  .tabs-container {
+    grid-area: tabs;
+  }
+
+  .destination-info {
+    grid-area: content;
+  }
+
+  .destination-info__details {
+    flex-direction: column;
+    border-top: 1px solid hsl(var(--colour-white) / 0.25);
+    padding-top: 2.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .rotate {
+    animation: rotate 350s linear infinite;
+  }
+
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (min-width: 35em) {
+    .destination-info__details {
+      flex-direction: row;
+      justify-content: space-evenly;
+    }
+  }
+
+  @media (min-width: 45em) {
+    .grid-container--destination {
+      justify-items: start;
+      align-content: start;
+      grid-template-areas:
+        '. title title .'
+        '. image tabs .'
+        '. image content .';
+    }
+
+    .grid-container--destination .numbered-title {
+      margin-bottom: 7.5rem;
+    }
+
+    .destination-image {
+      max-width: 100%;
+    }
+
+    .destination-info__details {
+      --gap: 4rem;
+      justify-content: start;
+    }
+  }
+</style>

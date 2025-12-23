@@ -1,0 +1,114 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Tabs from '../components/Tabs.astro';
+
+import { getCollection } from 'astro:content';
+const crewMembers = await getCollection('crew');
+---
+
+<Layout title="Space Tourism | Crew" page="crew">
+  <main id="main-content" tabindex="-1" class="grid-container grid-container--crew">
+    <h1 class="numbered-title uppercase">
+      <span aria-hidden="true">02</span>Meet your crew
+    </h1>
+
+    {
+      crewMembers.map((member, index) => (
+        <picture class="crew-image" hidden={index !== 0} data-crew-image={member.data.name}>
+          <source srcset={member.data.images.webp} />
+          <img src={member.data.images.png} alt={member.data.name} />
+        </picture>
+      ))
+    }
+
+    <Tabs items={crewMembers} group="crew">
+      {
+        crewMembers.map((member, index) => (
+          <div
+            id={`crew-${index}`}
+            role="tabpanel"
+            aria-labelledby={`crew-tab-${index}`}
+            hidden={index !== 0}
+          >
+            <h2 class="uppercase font-serif fs-700">
+              <span class="fs-600 crew-title role">{member.data.role}</span>
+              <br />
+              <span class="name">{member.data.name}</span>
+            </h2>
+            <p class="measure text-light bio">{member.data.bio}</p>
+          </div>
+        ))
+      }
+    </Tabs>
+  </main>
+</Layout>
+
+<style>
+  .grid-container--crew {
+    --flow-space: 2.5rem;
+    grid-template-areas:
+      'title'
+      'image'
+      'tabs'
+      'content';
+  }
+
+  .crew-image {
+    grid-area: image;
+    border-bottom: 1px solid hsl(var(--colour-white) / 0.25);
+  }
+
+  .crew-image > img {
+    max-width: 60%;
+    margin-inline: auto;
+  }
+
+  .tabs-container {
+    grid-area: tabs;
+  }
+
+  .crew-info {
+    grid-area: content;
+  }
+
+  .crew-title {
+    color: hsl(var(--colour-white) / 0.5);
+  }
+
+  @media (min-width: 35em) {
+    .grid-container--crew {
+      padding-bottom: 0;
+      grid-template-areas:
+        'title'
+        'content'
+        'tabs'
+        'image';
+    }
+
+    .crew-image {
+      align-self: end;
+    }
+
+    .crew-image > img {
+      max-width: 80%;
+    }
+  }
+
+  @media (min-width: 45em) {
+    .grid-container--crew {
+      justify-items: start;
+      grid-template-areas:
+        '. title title .'
+        '. content image .'
+        '. tabs image .';
+    }
+
+    .crew-image {
+      max-width: 100%;
+    }
+
+    .crew-image > img {
+      max-width: 100%;
+    }
+  }
+</style>
