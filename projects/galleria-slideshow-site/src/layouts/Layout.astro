@@ -2,8 +2,10 @@
 import '@frontend-mentor/css-reset';
 import '../styles/global.css';
 
-import Header from '../components/Header.astro'
+import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   paintingTitle?: string;
@@ -25,6 +27,7 @@ const { paintingTitle, artistName, currentIndex, totalSlides, prevSlug, nextSlug
     <link rel="icon" type="image/svg+xml" href="/favicon-32x32.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>Astro Basics</title>
+    <ClientRouter />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -35,15 +38,17 @@ const { paintingTitle, artistName, currentIndex, totalSlides, prevSlug, nextSlug
   <body>
     <Header />
     <slot />
-    {paintingTitle && artistName && currentIndex !== undefined && totalSlides !== undefined && (
-      <Footer
-        paintingTitle={paintingTitle}
-        artistName={artistName}
-        currentIndex={currentIndex}
-        totalSlides={totalSlides}
-        prevSlug={prevSlug}
-        nextSlug={nextSlug}
-      />
-    )}
+    {
+      paintingTitle && artistName && currentIndex !== undefined && totalSlides !== undefined && (
+        <Footer
+          paintingTitle={paintingTitle}
+          artistName={artistName}
+          currentIndex={currentIndex}
+          totalSlides={totalSlides}
+          prevSlug={prevSlug}
+          nextSlug={nextSlug}
+        />
+      )
+    }
   </body>
 </html>

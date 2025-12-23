@@ -40,9 +40,16 @@ const paintings = await getCollection('paintings');
   }
 </style>
 
-<script type="module">
+<script>
   import { BalancedMasonryGrid } from 'https://cdn.skypack.dev/@masonry-grid/vanilla';
-  const grid = document.getElementById('grid');
-  grid.classList.remove('hidden');
-  new BalancedMasonryGrid(grid);
+
+  function initMasonry() {
+    const grid = document.getElementById('grid');
+    if (grid) {
+      grid.classList.remove('hidden');
+      new BalancedMasonryGrid(grid);
+    }
+  }
+
+  document.addEventListener('astro:page-load', initMasonry);
 </script>

@@ -42,6 +42,7 @@ const nextSlug =
           <img
             src={painting.data.images.hero.small}
             alt={`A view of ${painting.data.name}`}
+            transition:name={`painting-${painting.data.slug}`}
           />
         </picture>
         <button type="button" class="view-image-button">
@@ -49,11 +50,11 @@ const nextSlug =
           <span>view image</span>
         </button>
       </div>
-      <div class="hero-meta">
+      <div class="hero-meta" transition:name={`meta-${painting.data.slug}`}>
         <h2>{painting.data.name}</h2>
         <p>{painting.data.artist.name}</p>
       </div>
-      <div class="hero-artist">
+      <div class="hero-artist" transition:name={`artist-${painting.data.slug}`}>
         <Image src={painting.data.artist.image} alt={painting.data.artist.name} />
       </div>
     </div>
@@ -152,7 +153,6 @@ const nextSlug =
   .hero-artist {
     grid-row: 4;
     grid-column: 1/2;
-    width: 4rem;
   }
 
   .content {
@@ -182,7 +182,7 @@ const nextSlug =
     z-index: -1;
   }
 
-  @media (min-width: 30em) {
+  @media (min-width: 48em) {
     .view-image-button {
       top: unset;
       bottom: var(--spacing-100);
@@ -207,7 +207,6 @@ const nextSlug =
     .hero-artist {
       grid-row: 2/4;
       grid-column: 3;
-      width: 100%;
       margin-inline-start: var(--spacing-300);
     }
 
@@ -223,12 +222,14 @@ const nextSlug =
     }
   }
 
-  @media (min-width: 50em) {
+  @media (min-width: 64em) {
     main {
       gap: 3rem;
-      grid-template-columns: 50% max-content;
+      grid-template-columns: 1fr minmax(auto, 30ch);
       align-items: center;
       justify-content: center;
+      max-width: 90rem;
+      margin-inline: auto;
     }
 
     .hero {

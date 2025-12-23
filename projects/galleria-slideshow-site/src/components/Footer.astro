@@ -52,6 +52,13 @@ const progressWidth = totalSlides > 1 ? ((currentIndex + 1) / totalSlides) * 100
 		align-items: center;
 		padding: var(--spacing-400);
 		border-top: 1px solid hsl(var(--color-grey-150));
+		margin-block-start: var(--spacing-1000);
+	}
+
+	@media (min-width: 80em) {
+		.footer {
+			margin-block-start: 0;
+		}		
 	}
 
 	.footer::before {

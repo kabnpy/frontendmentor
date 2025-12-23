@@ -19,10 +19,11 @@ const { width, height } = image;
       src={image}
       alt={title}
       class="gallery-card__image"
+      transition:name={`painting-${slug}`}
     />
     <div class="gallery-card__meta">
       <h2>{title}</h2>
-      <h3>{artist}</h3>
+      <p>{artist}</p>
     </div>
   </a>
 </article>
